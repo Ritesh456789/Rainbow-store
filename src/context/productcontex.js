@@ -35,8 +35,20 @@ const AppProvider = ({ children }) => {
     dispatch({ type: "SET_SINGLE_LOADING" });
     try {
       const res = await axios.get(url);
-      const singleProduct = await res.data;
-      dispatch({ type: "SET_SINGLE_PRODUCT", payload: singleProduct });
+      const products = await res.data;
+      
+      // Extract the product ID from the URL
+      const urlParams = new URLSearchParams(url.split('?')[1]);
+      const productId = urlParams.get('id');
+      
+      // Find the specific product by ID
+      const singleProduct = products.find(product => product.id === productId);
+      
+      if (singleProduct) {
+        dispatch({ type: "SET_SINGLE_PRODUCT", payload: singleProduct });
+      } else {
+        dispatch({ type: "SET_SINGLE_ERROR" });
+      }
     } catch (error) {
       dispatch({ type: "SET_SINGLE_ERROR" });
     }
