@@ -25,7 +25,7 @@ const SingleProduct = () => {
     company,
     price,
     description,
-    stock,
+    stock = 10, // Default stock value if not provided by API
     stars,
     reviews,
     image,
@@ -38,6 +38,15 @@ const SingleProduct = () => {
   if (isSingleLoading) {
     return <div className="page_loading">Loading.....</div>;
   }
+
+  // Check if singleProduct exists and has data
+  if (!singleProduct || Object.keys(singleProduct).length === 0) {
+    return <div className="page_loading">Product not found.....</div>;
+  }
+
+  // Debug: Log the product data
+  console.log("SingleProduct - singleProduct:", singleProduct);
+  console.log("SingleProduct - image field:", image);
 
   return (
     <Wrapper>
